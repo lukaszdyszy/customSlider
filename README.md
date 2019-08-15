@@ -76,6 +76,7 @@ nextSlide() | Next slide
         #my-slider-horizontal{
             width: 100%;
             height: 300px;
+            position: relative;
         }
         .hor{
             background-color: beige;
@@ -92,6 +93,47 @@ nextSlide() | Next slide
         .slide{
             border: 1px solid black;
             border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* nav */
+        .prev, .next{
+            position: absolute;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            font-size: 3rem;
+        }
+        .prev{
+            top: 0;
+            left: 0;
+        }
+        .next{
+            top: 0;
+            right: 0;
+        }
+        .prev:hover, .next:hover{
+            cursor: pointer;
+        }
+
+        ul.navigation{
+            width: 100%;
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 0;
+            margin: 0;
+        }
+        ul.navigation li{
+            padding: 10px;
+        }
+        ul.navigation li:hover{
+            cursor: pointer;
         }
 
     </style>
@@ -108,6 +150,9 @@ nextSlide() | Next slide
                 <div class="slide hor">Sldie 4</div>
                 <div class="slide hor">Sldie 5</div>
             </div>
+
+            <div class="prev">&lt;</div>
+            <div class="next">&gt;</div>
         </div>
 
         <div id="my-slider-vertical">
@@ -119,14 +164,43 @@ nextSlide() | Next slide
                 <div class="slide ver">Sldie 5</div>
             </div>
         </div>
+        <ul class="navigation">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
 
     </div>
 
     <script src="dist/customSlider.min.js"></script>
     <script>
-        const horizontal = new Slider({alias: '#my-slider-horizontal', current: 3});
-        const vertical = new Slider({alias: '#my-slider-vertical', orientation: 'vertical', duration: '0.3s', current: 2});
+        const horizontal = new Slider({
+            alias: '#my-slider-horizontal', 
+            current: 3
+        });
+        document.querySelector('.prev').addEventListener("click", function(){
+            horizontal.prevSlide();
+        });
+        document.querySelector('.next').addEventListener("click", function(){
+            horizontal.nextSlide();
+        });
+
+        const vertical = new Slider({
+            alias: '#my-slider-vertical', 
+            orientation: 'vertical', 
+            duration: '0.3s', 
+            current: 2
+        });
+        document.querySelectorAll('ul.navigation > li').forEach(function(el, index){
+            el.addEventListener("click", function(){
+                vertical.changeSlide(index);
+            })
+        });
     </script>
 </body>
 </html>
 ```
+## Demo
+[https://lukaszdyszy.github.io/customSlider/](https://lukaszdyszy.github.io/customSlider/)
