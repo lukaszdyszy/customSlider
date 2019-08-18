@@ -4,7 +4,9 @@ class Slider {
         this.alias = args.alias;
         this.orientation = args.orientation || 'horizontal';
         this.current = args.current || 0;
-        this.duration = args.duration || '1s';
+        this.transition = args.transition || '1s';
+        // this.autoChange = args.autoChange || false;
+        // this.timer = args.timer || 1000;
 
         this.container = document.querySelector(this.alias);
         this.container.style.overflow = 'hidden';
@@ -33,6 +35,10 @@ class Slider {
             this.slideWrapper.style.width = this.width + 'px';
         }
 
+        // if(this.autoChange){
+        //     setInterval(this.loop, this.timer);
+        // }
+        // else{this.changeSlide();}
         this.changeSlide();
     }
 
@@ -62,6 +68,14 @@ class Slider {
         this.current++;
         this.changeSlide();
     }
+
+    // loop(){
+    //     if(this.autoChange){
+    //         console.log('changing...');
+    //         this.current++;
+    //         this.changeSlide();
+    //     }
+    // }
 
 }
 
