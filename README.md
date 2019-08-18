@@ -44,18 +44,18 @@ const mySlider = new Slider({
 ### Options
 Option | Type | Default | Description
 ------ | -----| ------- | -----------
-orientation | string | 'horizontal' | Orientation of our slider - 'horizontal' or 'vertical'
-current | number | 0 | Number of first slide (counting from 0)
-transition | string | '1s' | Slide transition duration
-autoChange | boolean | false | Auto change slides in loop
-autoChangeDirection | string | 'forward' | 'forward' or 'backward'. Only if autoChange is set true
+orientation | string | 'horizontal' | Orientation of our slider - 'horizontal' or 'vertical'.
+current | number | 0 | Number of first slide (counting from 0).
+transition | string | '1s' | Slide transition duration.
+autoChange | boolean | false | Auto change slides in loop.
+autoChangeDirection | string | 'forward' | 'forward' or 'backward'. Only if autoChange is activated.
 timer | number | 1000 | When loop is activated. Time between slide changes in miliseconds.
 
 ### Methods
 Method | Description
 ------ | -----------
 changeSlide(nr) | Change slide to 'nr'
-prevSlide() | Previus slide
+prevSlide() | Previous slide
 nextSlide() | Next slide
 
 
