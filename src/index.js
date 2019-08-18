@@ -5,8 +5,9 @@ class Slider {
         this.orientation = args.orientation || 'horizontal';
         this.current = args.current || 0;
         this.transition = args.transition || '1s';
-        // this.autoChange = args.autoChange || false;
-        // this.timer = args.timer || 1000;
+        this.autoChange = args.autoChange || false;
+        this.autoChangeDirection = args.autoChangeDirection || 'forward';
+        this.timer = args.timer || 1000;
 
         this.container = document.querySelector(this.alias);
         this.container.style.overflow = 'hidden';
@@ -19,7 +20,7 @@ class Slider {
 
         this.slideWrapper.style.display = 'flex';
         this.slideWrapper.style.transition = 'transform';
-        this.slideWrapper.style.transitionDuration = this.duration;
+        this.slideWrapper.style.transitionDuration = this.transition;
 
         for(let i = 0; i < this.nr_o_slides; i++){
             document.querySelector(this.alias).querySelector('.slide-wrapper').querySelectorAll('.slide')[i].style.flex = 1;
@@ -35,11 +36,10 @@ class Slider {
             this.slideWrapper.style.width = this.width + 'px';
         }
 
-        // if(this.autoChange){
-        //     setInterval(this.loop, this.timer);
-        // }
-        // else{this.changeSlide();}
         this.changeSlide();
+        
+        let self = this;
+        if(this.autoChange){setTimeout(function(){self.loop();}, self.timer);}
     }
 
     changeSlide(nr){
@@ -69,13 +69,18 @@ class Slider {
         this.changeSlide();
     }
 
-    // loop(){
-    //     if(this.autoChange){
-    //         console.log('changing...');
-    //         this.current++;
-    //         this.changeSlide();
-    //     }
-    // }
+    loop(){
+        let self = this;
+        if(self.autoChangeDirection == 'forward'){
+            if(self.current == self.nr_o_slides-1){self.current = 0;}
+            else{self.current++;}
+        } else {
+            if(self.current == 0){self.current = self.nr_o_slides-1;}
+            else{self.current--;}
+        }
+        self.changeSlide();
+        if(self.autoChange){setTimeout(function(){self.loop();}, self.timer);}
+    }
 
 }
 
