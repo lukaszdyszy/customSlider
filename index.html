@@ -129,9 +129,12 @@
 
         const vertical = new Slider({
             alias: '#my-slider-vertical', 
+            current: 0, 
             orientation: 'vertical', 
-            duration: '0.3s', 
-            current: 2
+            transition: '0.3s',
+            autoChange: true,
+            autoChangeDirection: 'backward',
+            timer: 2000
         });
         document.querySelectorAll('ul.navigation > li').forEach(function(el, index){
             el.addEventListener("click", function(){
