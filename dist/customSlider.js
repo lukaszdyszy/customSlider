@@ -21,6 +21,7 @@ function () {
     this.autoChange = args.autoChange || false;
     this.autoChangeDirection = args.autoChangeDirection || 'forward';
     this.timer = args.timer || 1000;
+    this.draggable = args.draggable;
     this.container = document.querySelector(this.alias);
     this.container.style.overflow = 'hidden';
     this.slideWrapper = this.container.querySelector('.slide-wrapper');
@@ -43,6 +44,84 @@ function () {
       this.slideWrapper.style.flexDirection = 'column';
       this.slideWrapper.style.height = this.height * this.nr_o_slides + 'px';
       this.slideWrapper.style.width = this.width + 'px';
+    }
+
+    if (this.draggable) {
+      var dragging = function dragging(ev) {
+        if (ev.clientX !== undefined) {
+          stopX = ev.clientX;
+          stopY = ev.clientY;
+        } else {
+          stopX = ev.touches[0].clientX;
+          stopY = ev.touches[0].clientY;
+        }
+
+        if (_self.orientation == 'horizontal') {
+          var diff = startX - stopX;
+          this.style.transform = 'translateX(' + (trnslX - diff) + 'px)';
+        } else if (_self.orientation == 'vertical') {
+          var _diff = startY - stopY;
+
+          this.style.transform = 'translateY(' + (trnslY - _diff) + 'px)';
+        }
+      };
+
+      var enddrag = function enddrag() {
+        this.style.transitionDuration = _self.transition;
+
+        if (_self.orientation == 'horizontal') {
+          if (startX > stopX) {
+            _self.nextSlide();
+          }
+
+          if (startX < stopX) {
+            _self.prevSlide();
+          }
+        } else if (_self.orientation == 'vertical') {
+          if (startY > stopY) {
+            _self.nextSlide();
+          }
+
+          if (startY < stopY) {
+            _self.prevSlide();
+          }
+        }
+
+        this.removeEventListener('mousemove', dragging);
+        this.removeEventListener('mousup', enddrag);
+        this.removeEventListener('touchmove', dragging);
+        this.removeEventListener('touchend', enddrag);
+      }; // for mobiles
+
+
+      var _self = this;
+
+      var startX;
+      var startY;
+      var trnslX;
+      var trnslY;
+      var stopX;
+      var stopY; // for desktops
+
+      _self.slideWrapper.addEventListener('mousedown', function (e) {
+        this.style.transitionDuration = '0s';
+        startX = e.clientX;
+        startY = e.clientY;
+        trnslX = -(_self.width * _self.current);
+        trnslY = -(_self.height * _self.current);
+        this.addEventListener('mousemove', dragging);
+        this.addEventListener('mouseup', enddrag);
+      });
+
+      _self.slideWrapper.addEventListener('touchstart', function (e) {
+        this.style.transitionDuration = '0s';
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        trnslX = -(_self.width * _self.current);
+        trnslY = -(_self.height * _self.current);
+        this.addEventListener('touchmove', dragging);
+        this.addEventListener('touchend', enddrag);
+      });
     }
 
     this.changeSlide();
