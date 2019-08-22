@@ -8,6 +8,7 @@ class Slider {
         this.autoChange = args.autoChange || false;
         this.autoChangeDirection = args.autoChangeDirection || 'forward';
         this.timer = args.timer || 1000;
+        this.draggable = args.draggable;
 
         this.container = document.querySelector(this.alias);
         this.container.style.overflow = 'hidden';
@@ -34,6 +35,71 @@ class Slider {
             this.slideWrapper.style.flexDirection = 'column';
             this.slideWrapper.style.height = this.height*this.nr_o_slides + 'px';
             this.slideWrapper.style.width = this.width + 'px';
+        }
+
+        if(this.draggable){
+            let self = this;
+            let startX;
+            let startY;
+            let trnslX;
+            let trnslY;
+            let stopX;
+            let stopY;
+
+            // for desktops
+            self.slideWrapper.addEventListener('mousedown', function(e){
+                this.style.transitionDuration = '0s';
+                startX = e.clientX;
+                startY = e.clientY;
+                trnslX = -(self.width * self.current);
+                trnslY = -(self.height * self.current);
+
+                this.addEventListener('mousemove', dragging);
+                this.addEventListener('mouseup', enddrag);
+            });
+            function dragging(ev){
+                if(ev.clientX !== undefined){
+                    stopX = ev.clientX;
+                    stopY = ev.clientY;
+                } else{
+                    stopX = ev.touches[0].clientX;
+                    stopY = ev.touches[0].clientY;
+                }
+                if(self.orientation == 'horizontal'){
+                    let diff = startX - stopX;
+                    this.style.transform = 'translateX('+ (trnslX-diff) +'px)';
+                } else if(self.orientation == 'vertical'){
+                    let diff = startY - stopY;
+                    this.style.transform = 'translateY('+ (trnslY-diff) +'px)';
+                }
+            }
+            function enddrag(){
+                this.style.transitionDuration = self.transition;
+                
+                if(self.orientation == 'horizontal'){
+                    if(startX > stopX){self.nextSlide();}
+                    if(startX < stopX){self.prevSlide();}
+                } else if(self.orientation == 'vertical'){
+                    if(startY > stopY){self.nextSlide();}
+                    if(startY < stopY){self.prevSlide();}
+                }
+                this.removeEventListener('mousemove', dragging);
+                this.removeEventListener('mousup', enddrag);
+                this.removeEventListener('touchmove', dragging);
+                this.removeEventListener('touchend', enddrag);
+            }
+
+            // for mobiles
+            self.slideWrapper.addEventListener('touchstart', function(e){
+                this.style.transitionDuration = '0s';
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                trnslX = -(self.width * self.current);
+                trnslY = -(self.height * self.current);
+
+                this.addEventListener('touchmove', dragging);
+                this.addEventListener('touchend', enddrag);
+            });
         }
 
         this.changeSlide();
