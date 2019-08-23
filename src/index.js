@@ -8,7 +8,7 @@ class Slider {
         this.autoChange = args.autoChange || false;
         this.autoChangeDirection = args.autoChangeDirection || 'forward';
         this.timer = args.timer || 1000;
-        this.draggable = args.draggable;
+        this.draggable = args.draggable || false;
 
         this.container = document.querySelector(this.alias);
         this.container.style.overflow = 'hidden';
