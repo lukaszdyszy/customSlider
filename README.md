@@ -50,6 +50,7 @@ transition | string | '1s' | Slide transition duration.
 autoChange | boolean | false | Auto change slides in loop.
 autoChangeDirection | string | 'forward' | 'forward' or 'backward'. Only if autoChange is activated.
 timer | number | 1000 | When loop is activated. Time between slide changes in miliseconds.
+draggable | boolean | false | Change slides by dragging/touching
 
 ### Methods
 Method | Description
